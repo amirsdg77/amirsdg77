@@ -70,7 +70,7 @@ description = "توضیحات مربوط به تراکنش را در این قس
 email = 'email@example.com'  # Optional
 mobile = '09123456789'  # Optional
 
-client = Client('https://www.zarinpal.com/pg/services/WebGate/wsdl')
+# client = Client('https://www.zarinpal.com/pg/services/WebGate/wsdl')
 CallbackURL = 'http://localhost:8000/verify'  # Important: need to edit for realy server.
 
 
