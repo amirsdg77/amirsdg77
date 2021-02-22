@@ -4,13 +4,32 @@ from django.shortcuts import render, redirect
 from .forms import LoginForm, RegisterForm, EditUserForm
 from django.contrib.auth import login, get_user_model, authenticate, logout
 from django.contrib.auth.models import User
+from django.views.generic import ListView, DetailView
+
 
 from eshop_account.forms import VideoForm, ProductForm
 from eshop_setting.models import SiteSetting
 from .models import Profile
+from eshop_products.models import Product, Videos
 
 
 # Create your views here
+class PurchasedProductsList(ListView):
+    model = User
+    template_name = "account/purchased_product_list.html"
+    paginate_by = 6
+
+
+class PurchasedProduct(DetailView):
+    model = Product
+    template_name = "account/purchased_product.html"
+
+
+class PurchasedProductVideo(DetailView):
+    model = Videos
+    template_name = "account/purchased_product_videos.html"
+
+
 def login_user(request):
     if request.user.is_authenticated:
         return redirect('/')
@@ -66,11 +85,9 @@ def user_account_main_page(request):
         return render(request, 'account/user_account_main.html', {})
 
 
-
 @login_required(login_url='/login')
 def edit_user_profile(request):
-    user_id = request.user.id
-    user = User.objects.get(id=user_id)
+    user = request.user
     if user is None:
         raise Http404('کاربر مورد نظر یافت نشد')
 
@@ -80,7 +97,11 @@ def edit_user_profile(request):
     if edit_user_form.is_valid():
         first_name = edit_user_form.cleaned_data.get('first_name')
         last_name = edit_user_form.cleaned_data.get('last_name')
+        image = edit_user_form.cleaned_data.get('image')
+        bio = edit_user_form.cleaned_data.get('bio')
 
+        user.profile.bio = bio
+        user.profile.image = image
         user.first_name = first_name
         user.last_name = last_name
         user.save()
@@ -103,11 +124,11 @@ def add_product(request):
         if not request.user.has_perm('poll.change_poll'):
             return HttpResponseForbidden('Nope!')
         else:
-            product_form = ProductForm(request.POST, request.POST, request.POST, request.FILES)
+            product_form = ProductForm(request.POST, request.FILES)
             if product_form.is_valid():
                 product_form.save()
-
                 return redirect('/')
+            return HttpResponse('Nope!')
     else:
         product_form = ProductForm()
 

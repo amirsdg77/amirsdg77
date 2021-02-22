@@ -16,6 +16,14 @@ class EditUserForm(forms.Form):
         label='نام خانوادگی'
     )
 
+    bio = forms.CharField(
+        widget=forms.TextInput(attrs={'placeholder': 'لطفا بیوگرافی خود را وارد نمایید', 'class': 'form-control'}),
+        label='بیوگرافی'
+    )
+    image = forms.ImageField(
+        label='عکس پروفایل'
+    )
+
 
 class LoginForm(forms.Form):
     user_name = forms.CharField(
@@ -101,11 +109,12 @@ class RegisterForm(forms.Form):
 class VideoForm(forms.Form):
     product_id = forms.IntegerField()
     title = forms.CharField(max_length=50)
+    description = forms.CharField(max_length=50, widget=forms.Textarea)
     video = forms.FileField()
 
 
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ('title', 'description', 'price', 'video', 'categories')
+        fields = ('title', 'description', 'price', 'teacher', 'skill', 'video', 'categories')
 

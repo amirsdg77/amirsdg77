@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-    <style>
+<style>
         #rcorners1 {
           border-radius: 20px;
           background: whitesmoke;
@@ -17,7 +17,6 @@
           box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1px 4px 0 rgba(0, 0, 0, 0.19);
         }
     </style>
-
 <section>
 		<div class="container">
 			<div class="row">
@@ -30,9 +29,9 @@
 							<h3>{{ blog.headline }}</h3>
 							<div class="post-meta">
 								<ul>
-									<li><i class="fa fa-user"></i>{{ blog.authors.all.0 }}</li>
-									<li><i class="fa fa-clock-o"></i> {{ blog.pub_date.time }}</li>
-									<li><i class="fa fa-calendar"></i> {{ blog.pub_date.date }}</li>
+									<li><i class="fa fa-user"></i>{{ education.authors.all.0 }}</li>
+									<li><i class="fa fa-clock-o"></i> {{ education.pub_date.time }}</li>
+									<li><i class="fa fa-calendar"></i> {{ education.pub_date.date }}</li>
 								</ul>
 								<span>
 										<i class="fa fa-star"></i>
@@ -46,10 +45,10 @@
 								<img src="images/blog/blog-one.jpg" alt="">
 							</a>
                             <center>
-                            <img width="750" src="{{ blog.title_image.url }}" style="max-width: 100%">
+                            <img width="750" src="{{ education.title_image.url }}" style="max-width: 100%">
                             </center>
                             <br><br>
-							<p>{{ blog.body_text|linebreaks }}</p>
+							<p>{{ education.body_text|linebreaks }}</p>
 							<div class="pager-area">
 								<ul class="pager pull-left">
 									<li><a href="#">قبلی</a></li>
@@ -69,11 +68,11 @@
 								<i class="fa fa-star"></i>
 								<i class="fa fa-star"></i>
 							</li>
-							<li class="color">{{ blog.comments.count }} نظر</li>
+							<li class="color">{{ education.comments.count }} نظر </li>
 						</ul>
 						<ul class="tag">
 							<li>برچسب :</li>
-							<li><a class="color" href=""> {{ blog.category.all.0 }} <span>/</span></a></li>
+							<li><a class="color" href=""> {{ education.category.all.0 }} <span>/</span></a></li>
 						</ul>
 					</div><!--/rating-area-->
 
@@ -86,7 +85,7 @@
 							<img class="media-object" src="images/blog/Customer.jpg" alt="">
 						</a>
 						<div class="media-body">
-							<h4 class="media-heading">{{ blog.authors.all.0 }}</h4>
+							<h4 class="media-heading">{{ education.authors.all.0 }}</h4>
 							<p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده ازلورملورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد.</p>
 							<div class="blog-socials">
 								<ul>
@@ -100,7 +99,7 @@
 						</div>
 					</div><!--Comments-->
                     {% if user.is_authenticated %}
-{#                        <div class="replay-box">#}
+                        <div class="replay-box">
 						<div class="row">
 
 							<div class="col-sm-8">
@@ -108,20 +107,35 @@
 									<div class="blank-arrow">
 										<label>متن پیام</label>
 									</div>
-                                    <form method="post" action="{% url 'add-comment' blog.pk%}" enctype="multipart/form-data">
+                                    <form method="post" action="{% url 'add-edu-comment' education.pk %}" enctype="multipart/form-data">
                                             {% csrf_token %}
                                             {{form.body_text}}
                                         <button type="submit" class="btnSubmit"  style="font-family: 'B Mehr';margin-top: 30px; margin-bottom: -5px">ارسال</button>
                                     </form>
-
 									<span>*</span>
 								</div>
 							</div>
 							<div class="col-sm-4">
 								<h2>نظـر خود را بنویسیـد</h2>
+{#								<form>#}
+{#									<div class="blank-arrow">#}
+{#										<label>نام</label>#}
+{#									</div>#}
+{#									<span>*</span>#}
+{#									<input type="text" placeholder="نام شما ...">#}
+{#									<div class="blank-arrow">#}
+{#										<label>آدرس ایمیـل</label>#}
+{#									</div>#}
+{#									<span>*</span>#}
+{#									<input type="email" placeholder="ایمیـل شما ...">#}
+{#									<div class="blank-arrow">#}
+{#										<label>وبسایت</label>#}
+{#									</div>#}
+{#									<input type="email" placeholder="آدرس وبسایـت">#}
+{#								</form>#}
 							</div>
 						</div>
-{#					</div><!--/Repaly Box-->#}
+					</div><!--/Repaly Box-->
                     {% else %}
 
                         <a href="{% url 'login'%}">وارد شوید</a>
@@ -130,7 +144,7 @@
 					<div class="response-area">
 						<h2>نظرات</h2>
 						<ul class="media-list">
-                            {% for comment in blog.comments.all %}
+                            {% for comment in education.comments.all reversed %}
 							<li class="media" style="box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1px 4px 0 rgba(0, 0, 0, 0.19);">
 
 								<a class="pull-right" href="#">
@@ -163,7 +177,8 @@
                             {% endfor %}
 						</ul>
 					</div><!--/Response-area-->
-                </div><br><br>
+                </div> <br><br>
+
 				</div>
 
                 <div class="col-sm-3">

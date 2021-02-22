@@ -14,13 +14,22 @@ from .models import Blog, Comment, Education
 
 class EducationView(ListView):
     model = Education
-    template_name = "blog-single.html"
+    template_name = "education.html"
     paginate_by = 10
 
 
-class EducationPage(DetailView):
-    model = Education
-    template_name = "education.html"
+def education_page(request, pk):
+    blog = None
+    for blog in Education.objects.all():
+        if blog.pk == pk:
+            blog = blog
+            break
+    form = CommentForm(request.POST or None)
+    context = {
+        'education': blog,
+        'form': form
+    }
+    return render(request, 'education_page.html', context)
 
 
 def add_edu(request):
@@ -43,27 +52,19 @@ def add_edu(request):
 
 
 def add_edu_comment(request, pk):
-    if request.method == 'POST':
-        current_user = request.user
-        form = CommentForm(request.POST)
-        for bl in Education.objects.all():
-            if bl.pk == pk:
-                blog = bl
-
-        if form.is_valid():
-            comment = form.save()
-            comment.user.add(current_user)
-            blog.comments.add(comment)
-            blog.save()
-            return redirect('/education')
-    else:
-        form = CommentForm()
-
-    context = {
-        'form': form,
-    }
-
-    return render(request, 'add_comment.html', context)
+    blog = None
+    for blog in Education.objects.all():
+        if blog.pk == pk:
+            blog = blog
+            break
+    form = CommentForm(request.POST or None)
+    if form.is_valid():
+        comment = form.save()
+        comment.user.add(request.user)
+        comment.save()
+        blog.comments.add(comment)
+        blog.save()
+    return redirect('/education/' + str(pk))
 
 
 class LatestNews(ListView):
@@ -72,48 +73,34 @@ class LatestNews(ListView):
     paginate_by = 10
 
 
-class BlogPage(DetailView):
-    model = Blog
-    template_name = "blog_page.html"
-# def blog_page(request, blog):
-#     comments = blog.comments.all()
-#     context = {
-#         'comments': comments,
-#         'blog': blog
-#     }
-#     return render(request, 'blog_page.html', context)
+def blog_page(request, pk):
+    blog = None
+    for blog in Blog.objects.all():
+        if blog.pk == pk:
+            blog = blog
+            break
+    form = CommentForm(request.POST or None)
+    context = {
+        'blog': blog,
+        'form': form
+    }
+    return render(request, 'blog_page.html', context)
 
-
-# class AddComment(CreateView):
-#     model = Comment
-#     template_name = "add_comment.html"
-#     form_class = CommentForm
-#     success_url = reverse_lazy('home_page')
-#     def form_valid(self, form):
-#         form.instance.user = self.request.user
 
 def add_comment(request, pk):
-    if request.method == 'POST':
-        current_user = request.user
-        form = CommentForm(request.POST)
-        for bl in Blog.objects.all():
-            if bl.pk == pk:
-                blog = bl
-
-        if form.is_valid():
-            comment = form.save()
-            comment.user.add(current_user)
-            blog.comments.add(comment)
-            blog.save()
-            return redirect('/blog')
-    else:
-        form = CommentForm()
-
-    context = {
-        'form': form,
-    }
-
-    return render(request, 'add_comment.html', context)
+    blog = None
+    for blog in Blog.objects.all():
+        if blog.pk == pk:
+            blog = blog
+            break
+    form = CommentForm(request.POST or None)
+    if form.is_valid():
+        comment = form.save()
+        comment.user.add(request.user)
+        comment.save()
+        blog.comments.add(comment)
+        blog.save()
+    return redirect('/blog/'+str(pk))
 
 
 def news(request):
@@ -122,7 +109,7 @@ def news(request):
         'setting': site_setting
     }
 
-    return render(request, 'blog-single.html', context)
+    return render(request, 'education.html', context)
 
 
 def add_blog_category(request):

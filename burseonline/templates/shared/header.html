@@ -1,6 +1,17 @@
 {% load static %}
-<header id="header"><!--header-->
-    <div class="header_top"><!--header_top-->
+<style>
+    #header1 {
+	border-bottom: solid 2px white;
+	margin-bottom: 20px;
+}
+
+.header_top1 {
+  background: none repeat scroll 0 0 #F0F0E9;
+	display: none; /* Don't show topbar */
+}
+</style>
+<header id="header1" style="box-shadow: 0 0 0 0 #FD9B18, 0 1px 4px 0 #FD9B18;"><!--header-->
+    <div class="header_top1"><!--header_top-->
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
@@ -86,11 +97,14 @@
                         <ul class="nav navbar-nav collapse navbar-collapse">
                             <li><a href="/">خـانه</a></li>
                             <li><a href="/products">محصولات</a></li>
-                            <li class="dropdown"><a href="#">اخبـار<i class="fa fa-angle-down"></i></a>
-                                <ul role="menu" class="sub-menu">
-                                    <li><a href="/blog">آخریـن اخبـار</a></li>
-                                    <li><a href="/blog-single">صفحـه خبـر</a></li>
-                                </ul>
+                            {% if user.is_authenticated %}
+                                <li><a href="/user/products">محصولات من</a></li>
+                            {% endif %}
+                            <li class="dropdown"><a href="/blog">اخبـار</a>
+{#                                <ul role="menu" class="sub-menu">#}
+{#                                    <li><a href="/blog">آخریـن اخبـار</a></li>#}
+{#                                    <li><a href="/blog-single">صفحـه خبـر</a></li>#}
+{#                                </ul>#}
                             </li>
                             <li><a href="/education">آموزش</a></li>
                             <li><a href="/about-us">درباره مـا</a></li>

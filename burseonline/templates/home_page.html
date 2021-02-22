@@ -2,51 +2,78 @@
 {% load static %}
 
 {% block content %}
-    <section id="slider"><!--slider-->
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div id="slider-carousel" class="carousel slide" data-ride="carousel">
-                        <ol class="carousel-indicators">
-                            <li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
-                            <li data-target="#slider-carousel" data-slide-to="1"></li>
-                        </ol>
-
-                        <div class="carousel-inner">
-
-                            {% for slider in sliders %}
-                                <div class="item {{ forloop.first|yesno:"active," }}">
-                                    <div class="col-sm-6">
-                                        <h2>{{ slider.title }}</h2>
-                                        <p>
-                                            {{ slider.description }}
-                                        </p>
-                                        <a href="{{ slider.link }}" class="btn btn-default get" target="_blank">توضیحات
-                                            بیشتر</a>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <img src="{{ slider.image.url }}" class="girl img-responsive"
-                                             alt="{{ slider.title }}" width="500px"/>
-                                    </div>
-                                </div>
-                            {% endfor %}
-
-                        </div>
-
-                        <a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
-                            <i class="fa fa-angle-left"></i>
-                        </a>
-                        <a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
-                            <i class="fa fa-angle-right"></i>
-                        </a>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </section><!--/slider-->
+    <style>
+        #rcorners1 {
+          border-radius: 20px;
+          background: whitesmoke;
+          padding: 20px;
+        }
+        div.polaroid {
+          {#width: 1000px;#}
+          padding-right: 30px;
+            padding-left: 30px;
+            padding-top: 10px;
+            padding-bottom: 30px;
+          box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1px 4px 0 rgba(0, 0, 0, 0.19);
+        }
+    </style>
+    <section>
+    <div class="container">
+    <div class="polaroid">
+        <center>
+        <video width="1000" height="200" autoplay muted>
+            <source>
+        </video>
+        </center>
+    </div><br><br>
+    </div>
+    </section>
+{#    <section id="slider"><!--slider-->#}
+{#        <div class="container">#}
+{#            <div class="row" >#}
+{#                <div class="col-sm-12">#}
+{#                    <div id="slider-carousel" class="carousel slide" data-ride="carousel">#}
+{#                        <ol class="carousel-indicators">#}
+{#                            <li data-target="#slider-carousel" data-slide-to="0" class="active"></li>#}
+{#                            <li data-target="#slider-carousel" data-slide-to="1"></li>#}
+{#                        </ol>#}
+{##}
+{#                        <div class="carousel-inner">#}
+{##}
+{#                            {% for slider in sliders %}#}
+{#                                <div class="item {{ forloop.first|yesno:"active," }}">#}
+{#                                    <div class="col-sm-6">#}
+{#                                        <h2>{{ slider.title }}</h2>#}
+{#                                        <p>#}
+{#                                            {{ slider.description }}#}
+{#                                        </p>#}
+{#                                        <a href="{{ slider.link }}" class="btn btn-default get" target="_blank">توضیحات#}
+{#                                            بیشتر</a>#}
+{#                                    </div>#}
+{#                                    <div class="col-sm-6">#}
+{#                                        <img src="{{ slider.image.url }}" class="girl img-responsive"#}
+{#                                             alt="{{ slider.title }}" width="500px"/>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            {% endfor %}#}
+{##}
+{#                        </div>#}
+{##}
+{#                        <a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">#}
+{#                            <i class="fa fa-angle-left"></i>#}
+{#                        </a>#}
+{#                        <a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">#}
+{#                            <i class="fa fa-angle-right"></i>#}
+{#                        </a>#}
+{#                    </div>#}
+{##}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </section><!--/slider-->#}
     <section>
         <div class="container">
+        <div class="polaroid">
             <div class="row">
 
                 <div class="recommended_items"><!--NewProduct_items-->
@@ -58,14 +85,20 @@
                                 <div class="item {{ forloop.first|yesno:"active," }}">
                                     {% for product in group %}
                                         <div class="col-sm-3">
-                                            <div class="product-image-wrapper">
-                                                <div class="single-products">
-                                                    <div class="productinfo text-center">
-                                                        <img src="{{ product.image.url }}" alt=""/>
-                                                        <h2>{{ product.price }} تومان</h2>
-                                                        <a href="{% url 'product-detail' product.pk %}">{{ product.title }}</a>
-                                                        <a href="#" class="btn btn-default add-to-cart"><i
-                                                                class="fa fa-shopping-cart"></i>افزودن به سبـد خرید</a>
+                                            <div class="product-image-wrapper" style="box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1px 4px 0 rgba(0, 0, 0, 0.19);">
+                                                <div class="single-products" >
+                                                    <div class="productinfo text-center" >
+                                                        {% if product.price is 0 %}
+                                                            <h2>رایگان</h2>
+                                                            <a href="{% url 'show-product' product.pk %}">{{ product.title }}</a>
+                                                            <a href="{% url 'show-product' product.pk %}" class="btn btn-default add-to-cart"><i
+                                                                class="fa fa-shopping-cart"></i>مشاهده</a>
+                                                        {% else %}
+                                                            <h2>{{ product.price }} تومان</h2>
+                                                            <a href="{% url 'product-detail' product.pk %}">{{ product.title }}</a>
+                                                            <a href="{% url 'product-detail' product.pk %}" class="btn btn-default add-to-cart"><i
+                                                                    class="fa fa-shopping-cart"></i>صفحه خرید</a>
+                                                        {% endif %}
                                                     </div>
 
                                                 </div>
@@ -93,14 +126,21 @@
                                 <div class="item {{ forloop.first|yesno:"active," }}">
                                     {% for product in group %}
                                         <div class="col-sm-3">
-                                            <div class="product-image-wrapper">
+                                            <div class="product-image-wrapper" style="box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1px 4px 0 rgba(0, 0, 0, 0.19);">
                                                 <div class="single-products">
                                                     <div class="productinfo text-center">
                                                         <img src="{{ product.image.url }}" alt=""/>
-                                                        <h2>{{ product.price }} تومان</h2>
-                                                        <a href="{% url 'product-detail' product.pk %}">{{ product.title }}</a>
-                                                        <a href="#" class="btn btn-default add-to-cart"><i
-                                                                class="fa fa-shopping-cart"></i>افزودن به سبـد خرید</a>
+                                                        {% if product.price is 0 %}
+                                                            <h2>رایگان</h2>
+                                                            <a href="{% url 'show-product' product.pk %}">{{ product.title }}</a>
+                                                            <a href="{% url 'show-product' product.pk %}" class="btn btn-default add-to-cart"><i
+                                                                class="fa fa-shopping-cart"></i>مشاهده</a>
+                                                        {% else %}
+                                                            <h2>{{ product.price }} تومان</h2>
+                                                            <a href="{% url 'product-detail' product.pk %}">{{ product.title }}</a>
+                                                            <a href="{% url 'product-detail' product.pk %}" class="btn btn-default add-to-cart"><i
+                                                                    class="fa fa-shopping-cart"></i>صفحه خرید</a>
+                                                        {% endif %}
                                                     </div>
 
                                                 </div>
@@ -120,6 +160,7 @@
                 </div><!--/NewProduct_items-->
 
             </div>
+        </div><br><br>
         </div>
     </section>
 {% endblock %}

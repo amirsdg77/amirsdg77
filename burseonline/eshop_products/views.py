@@ -2,6 +2,9 @@ import itertools
 
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
+from django.contrib.auth.models import User
+from django.http.response import HttpResponse
+
 
 from eshop_order.forms import UserNewOrderForm
 from .models import Product, ProductGallery, Videos
@@ -119,6 +122,7 @@ def add_product_category(request):
         form = CategoryForm(request.POST, request.POST)
         if form.is_valid():
             form.save()
+            return redirect("/")
     else:
         form = CategoryForm()
 
@@ -143,15 +147,18 @@ def upload_video(request):
         if not request.user.has_perm('poll.change_poll'):
             return HttpResponseForbidden('Nope!')
         else:
-            form = VideoForm(request.POST, request.POST, request.FILES)
+            form = VideoForm(request.POST, request.FILES)
             if form.is_valid():
                 for product in products:
-                    if form.product_id == product.id:
-                        video = Videos(title=form.cleaned_data.get('title'), video=form.cleaned_data.get('video'))
+                    if form.cleaned_data.get('product_id') == product.id:
+                        video = Videos(title=form.cleaned_data.get('title'),
+                                       description=form.cleaned_data.get('description'),
+                                       video=form.cleaned_data.get('video'))
                         video.save()
                         product.videos.add(video)
                         product.save()
-                        break
+                        return redirect('/')
+            return HttpResponse('invalid input')
 
     else:
         form = VideoForm()
@@ -164,7 +171,7 @@ def upload_video(request):
     return render(request, 'account/product_video_upload.html', context)
 
 
-def display_video(request):
+def display_video(request, pk):
     print("hi")
 
 

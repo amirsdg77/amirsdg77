@@ -51,7 +51,8 @@ class ProductsManager(models.Manager):
 
 class Videos(models.Model):
     title = models.CharField(max_length=100)
-    video = models.FileField(upload_to='videos/')
+    description = models.TextField(verbose_name='توضیحات', null=True)
+    video = models.FileField(upload_to=upload_image_path)
 
     class Meta:
         verbose_name = 'video'
@@ -64,13 +65,15 @@ class Videos(models.Model):
 class Product(models.Model):
     title = models.CharField(max_length=150, verbose_name='عنوان')
     description = models.TextField(verbose_name='توضیحات')
-    price = models.IntegerField(verbose_name='قیمت')
+    price = models.IntegerField(verbose_name='قیمت', default=0, blank=True)
+    teacher = models.CharField(max_length=150, verbose_name='استاد', default=None)
+    skill = models.CharField(max_length=150, verbose_name='مهارت', default=None, null=True)
     video = models.FileField(upload_to=upload_image_path, null=True, blank=True, verbose_name='ویدیو ی معرفی')
     active = models.BooleanField(default=False, verbose_name='فعال / غیرفعال')
     categories = models.ManyToManyField(ProductCategory, blank=True, verbose_name="دسته بندی ها")
     visit_count = models.IntegerField(default=0, verbose_name='تعداد بازدید')
-    comment = models.ManyToManyField(Comment)
-    videos = models.ManyToManyField(Videos)
+    comment = models.ManyToManyField(Comment,null=True, blank=True)
+    videos = models.ManyToManyField(Videos,null=True, blank=True)
 
     objects = ProductsManager()
 
@@ -79,7 +82,7 @@ class Product(models.Model):
         verbose_name_plural = 'محصولات'
 
     def __str__(self):
-        return self.id
+        return self.title
 
     def get_absolute_url(self):
         return f"/products/{self.id}/{self.title.replace(' ', '-')}"
