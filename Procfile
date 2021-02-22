@@ -1,1 +1,1 @@
-run this thing
+"web: gunicorn mysite.wsgi --log-file -" 
