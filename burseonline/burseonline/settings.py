@@ -26,7 +26,7 @@ SECRET_KEY = '=t*i_y+f524$s*$eg@rdk*ax2#%7*&gi-a+0dvt(imqh#v0(&3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['fathomless-chamber-11784.herokuapp.com']
 
 
 # Application definition
