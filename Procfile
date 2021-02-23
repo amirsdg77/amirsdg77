@@ -1,1 +1,9 @@
-web: gunicorn fathomless-chamber-11784.wsgi --log-file -
+web: gunicorn eshop_account.wsgi --log-file -
+web: gunicorn eshop_products.wsgi --log-file -
+web: gunicorn eshop_tag.wsgi --log-file -
+web: gunicorn eshop_products_category.wsgi --log-file -
+web: gunicorn eshop_sliders.wsgi --log-file -
+web: gunicorn eshop_contact.wsgi --log-file -
+web: gunicorn eshop_setting.wsgi --log-file -
+web: gunicorn eshop_order.wsgi --log-file -
+web: gunicorn eshop_news.wsgi --log-file -
