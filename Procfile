@@ -1,1 +1,1 @@
-web: gunicorn app:app
+web: gunicorn fathomless-chamber-11784.wsgi --log-file -
